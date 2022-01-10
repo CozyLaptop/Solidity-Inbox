@@ -18,7 +18,18 @@ beforeEach(async() =>{
 
 describe('Inbox', () => {
     it('should deploy a contract',  () => {
-        console.log(inbox);
+        assert.ok(inbox.options.address);
+    });
+
+    it('should have a default message', async () => {
+        const message = await inbox.methods.message().call();
+        assert.strictEqual(message, 'Hi there!');
+    });
+
+    it('should be able to change the message', async () =>{
+        await inbox.methods.setMessage('bye').send({ from: accounts[0] });
+        const message = await inbox.methods.message().call();
+        assert.strictEqual(message, 'bye');
     });
 });
 // class Car{
